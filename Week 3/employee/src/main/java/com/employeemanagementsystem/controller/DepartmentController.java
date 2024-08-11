@@ -1,7 +1,6 @@
 package com.employeemanagementsystem.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.employeemanagementsystem.dto.DepartmentDTO;
 import com.employeemanagementsystem.entity.Department;
+import com.employeemanagementsystem.projection.DepartmentProjection;
 import com.employeemanagementsystem.service.DepartmentService;
 
 @RestController
@@ -20,12 +20,21 @@ import com.employeemanagementsystem.service.DepartmentService;
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
-
+    // Start of DTO and Projections controlled by GetMapping
     @GetMapping
-    public List<Department> getAllDepartments(){
+    public List<DepartmentProjection> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
     @GetMapping("/{id}")
+    public DepartmentProjection getDeptById(@PathVariable Long id){
+        return departmentService.getDeptById(id);
+    }
+    @GetMapping("/name/{name}")
+    public DepartmentDTO getDepartmentByName(@PathVariable String name){
+        return departmentService.getDepartmentByName(name);
+    }
+    // End of DTO and Projections controlled by GetMapping
+    
     public Department getDepartmentById(@PathVariable Long id){
         return departmentService.getDepartmentById(id);
     }
@@ -46,9 +55,5 @@ public class DepartmentController {
     @DeleteMapping("/{id}")
     public void deleteDepartment(@PathVariable Long id){
         departmentService.deleteDepartment(id);
-    }
-    @GetMapping("/{name}")
-    public List<Department> getDepartmentByName(@PathVariable String name){
-        return departmentService.getDepartmentByName(name);
     }
 }

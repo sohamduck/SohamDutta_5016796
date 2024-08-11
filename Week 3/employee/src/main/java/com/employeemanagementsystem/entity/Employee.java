@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +24,16 @@ import org.springframework.data.annotation.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@NamedQueries({
+    @NamedQuery(
+        name="Employee.findByName",
+        query="SELECT e FROM Employee e WHERE e.name=:name"
+    ),
+    @NamedQuery(
+        name="Employee.findByEmail",
+        query = "SELECT e FROM Employee e WHERE e.email=:email"
+    )
+})
 public class Employee {
     @Id
     @GeneratedValue
