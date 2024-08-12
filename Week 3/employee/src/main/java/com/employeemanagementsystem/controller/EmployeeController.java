@@ -57,6 +57,10 @@ public class EmployeeController {
     public Employee createEmployee(@RequestBody Employee employee){
         return employeeService.saveEmployee(employee);
     }
+    @PostMapping("/batch")
+    public void batchInsert(@RequestBody List<Employee> employees) {
+        employeeService.batchInsert(employees);
+    }
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
         Employee employee=employeeService.getEmployeeById(id);
