@@ -13,9 +13,9 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     @Query(name = "Book.findByTitle")
     Optional<Book> findByTitle(@Param("title") String title);
     @Query("SELECT b FROM Book b WHERE b.author=:author")
-    List<Book> findByAuthor(@Param("author") String author);
+    Optional<List<Book>> findByAuthor(@Param("author") String author);
     @Query("select b from Book b where b.price=:price")
-    List<Book> findByPrice(Double price);
+    Optional<List<Book>> findByPrice(Double price);
     @Query("select b from Book b where b.isbn=:isbn")
-    Book findByIsbn(String isbn);
+    Optional<Book> findByIsbn(String isbn);
 }
