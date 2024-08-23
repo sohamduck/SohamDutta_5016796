@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-    @GetMapping
+    @GetMapping(produces = {"application/json","application/xml"})
     public List<Customer> getAllCustomers(){
         return customerService.getAllCustomers();
     }
@@ -38,7 +38,8 @@ public class CustomerController {
         resource.add(linkTo(methodOn(CustomerController.class).getAllCustomers()).withRel("all-customers"));
         return resource;    
     }
-    @PostMapping
+    @PostMapping(consumes = {"application/json","application/xml"},
+                produces={"application/json","application/xml"})
     public ResponseEntity<String> insertCustomer(@Valid @RequestBody Customer customer){
         return customerService.saveCustomer(customer);
     }
