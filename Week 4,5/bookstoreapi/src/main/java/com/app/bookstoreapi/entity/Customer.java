@@ -1,4 +1,5 @@
 package com.app.bookstoreapi.entity;
+import org.springframework.hateoas.RepresentationModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Customer extends RepresentationModel<Customer> {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;

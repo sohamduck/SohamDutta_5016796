@@ -99,4 +99,8 @@ public class CustomerService {
         customerRepo.deleteAll();
         return ResponseEntity.ok("All Customers deleted");
     }
+    public Customer getCustomerById(Long id) {
+        Optional<Customer> customer=customerRepo.findById(id);
+        return customer.orElseThrow(()->new RuntimeException("Customer not found with id: "+id));
+    }
 }
