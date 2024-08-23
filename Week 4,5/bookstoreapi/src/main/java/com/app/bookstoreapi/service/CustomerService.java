@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.app.bookstoreapi.repo.CustomerRepository;
 
+import jakarta.persistence.OptimisticLockException;
+
 @Service
 public class CustomerService {
     @Autowired
@@ -40,23 +42,32 @@ public class CustomerService {
         return ResponseEntity.ok(existing);
     }
     public ResponseEntity<String> saveCustomer(Customer customer){
-        customerRepo.save(customer);
-        return ResponseEntity.ok("Customer saved with id: "+customer.getId());
+        try{
+            customerRepo.save(customer);
+            return ResponseEntity.ok("Customer saved with id: "+customer.getId());
+        }
+        catch(OptimisticLockException e){
+            return new ResponseEntity<>("Failed to save customer: Concurrent Modification detected.",HttpStatus.CONFLICT);
+        }
     }
     public ResponseEntity<Object> updateEntireCustomer(Long id, Customer customer){
-        Optional<Customer> existing=customerRepo.findById(id);
-        if(!existing.isPresent()){
-            customerRepo.save(customer);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not present before, so created. Please save customers with POST method");
+        try {
+            Optional<Customer> existing=customerRepo.findById(id);
+            if(!existing.isPresent()){
+                customerRepo.save(customer);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not present before, so created. Please save customers with POST method");
+            }
+            Customer cust=existing.get();
+            cust.setFirstName(customer.getFirstName());
+            cust.setMiddleName(customer.getMiddleName());
+            cust.setLastName(customer.getLastName());
+            cust.setAge(customer.getAge());
+            cust.setNumber(customer.getNumber());
+            customerRepo.save(cust);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Customer with id: "+id+" updated");
+        } catch (OptimisticLockException e) {
+            return new ResponseEntity<>("Failed to save customer: Concurrent Modification detected.",HttpStatus.CONFLICT);
         }
-        Customer cust=existing.get();
-        cust.setFirstName(customer.getFirstName());
-        cust.setMiddleName(customer.getMiddleName());
-        cust.setLastName(customer.getLastName());
-        cust.setAge(customer.getAge());
-        cust.setNumber(customer.getNumber());
-        customerRepo.save(cust);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Customer with id: "+id+" updated");
     }
     public ResponseEntity<Object> updateCustomer(Long id,Customer newCustomer){
         Optional<Customer> existing=customerRepo.findById(id);

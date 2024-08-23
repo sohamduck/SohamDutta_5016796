@@ -1,6 +1,7 @@
 package com.app.bookstoreapi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,8 +15,11 @@ import java.util.List;
 import com.app.bookstoreapi.entity.Customer;
 import com.app.bookstoreapi.service.CustomerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/customer")
+@Validated
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -24,7 +28,7 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
     @PostMapping
-    public ResponseEntity<String> insertCustomer(@RequestBody Customer customer){
+    public ResponseEntity<String> insertCustomer(@Valid @RequestBody Customer customer){
         return customerService.saveCustomer(customer);
     }
     @PutMapping("/{id}")
