@@ -48,8 +48,8 @@ public class BookService {
         return ResponseEntity.ok(existing);
     }
     public ResponseEntity<String> saveBook(Book book){
-        Book newBook=bookRepo.save(book);
-        return ResponseEntity.ok("Book Inserted id: "+newBook.getId());
+        bookRepo.save(book);
+        return ResponseEntity.ok("Book Inserted id: "+book.getId());
     }
     public ResponseEntity<String> updateBook(Long id, Book updatedBook){
         Optional<Book> existingBook=bookRepo.findById(id);
