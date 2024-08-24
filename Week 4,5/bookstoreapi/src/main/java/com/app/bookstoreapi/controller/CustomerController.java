@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import com.app.bookstoreapi.entity.Customer;
+import com.app.bookstoreapi.service.CustomMetricsService;
 import com.app.bookstoreapi.service.CustomerService;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import jakarta.validation.Valid;
@@ -26,8 +27,11 @@ import jakarta.validation.Valid;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomMetricsService customMetricsService;
     @GetMapping(produces = {"application/json","application/xml"})
     public List<Customer> getAllCustomers(){
+        customMetricsService.incrementCounter();
         return customerService.getAllCustomers();
     }
     @GetMapping("/{id}")
