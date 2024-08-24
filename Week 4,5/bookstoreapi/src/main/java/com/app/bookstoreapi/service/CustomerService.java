@@ -5,6 +5,7 @@ import com.app.bookstoreapi.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.app.bookstoreapi.repo.CustomerRepository;
 
@@ -14,6 +15,15 @@ import jakarta.persistence.OptimisticLockException;
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    public void save(Customer customer){
+        if(customer.getPassword()!=null && !customer.getPassword().isEmpty())
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        else
+            throw new IllegalArgumentException("Password cannot be null");
+        customerRepo.save(customer);
+    }
     public List<Customer> getAllCustomers(){
         return customerRepo.findAll();
     }

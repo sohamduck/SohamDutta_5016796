@@ -17,4 +17,5 @@ public interface CustomerRepository extends JpaRepository<Customer,Long>{
     Optional<List<Customer>> findByAge(Integer age);
     @Query("select c from Customer c where c.number=:number")
     Optional<List<Customer>> findByNumber(Long number);
+    Optional<Customer> findByUsername(String username);
 }

@@ -48,4 +48,8 @@ public class Customer extends RepresentationModel<Customer> {
     }
     @Version
     private Integer version;
+    // @JsonIgnore
+    private String username;
+    // @JsonIgnore
+    private String password;
 }
