@@ -26,5 +26,5 @@ public class SwaggerConfig {
             "LICENSE",
             "API licecnse url"
             );
-    }
+    };
 }
