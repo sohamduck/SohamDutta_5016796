@@ -31,7 +31,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .authorizeHttpRequests()
-                .requestMatchers("/**").permitAll()  // Allow access to auth endpoints
+                .requestMatchers("/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()  // Allow access to auth endpoints
                 .requestMatchers("/api/customers/register").permitAll()  // Allow access to registration endpoint
                 .anyRequest().authenticated()
             .and()
